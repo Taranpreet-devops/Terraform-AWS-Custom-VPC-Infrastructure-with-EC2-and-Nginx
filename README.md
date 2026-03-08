@@ -35,28 +35,22 @@ This Terraform project provisions a **complete AWS infrastructure** including a 
 
 ## 🏗️ Architecture Overview
 
-
-
-
-
-
-
 ```mermaid
 graph TB
-    subgraph Internet["🌐 Internet"]
-        User[("👤 User")]
+    subgraph Internet["Internet"]
+        User[("User")]
     end
     
-    subgraph AWS["☁️ AWS Cloud"]
-        subgraph VPC["🕸️ Custom VPC (10.0.0.0/16)"]
-            IGW[("🚪 Internet Gateway")]
+    subgraph AWS["AWS Cloud"]
+        subgraph VPC["Custom VPC (10.0.0.0/16)"]
+            IGW[("Internet Gateway")]
             
-            subgraph PublicSubnet["📡 Public Subnet (10.0.1.0/24)"]
-                EC2["🖥️ EC2 Instance<br/>Amazon Linux 2"]
-                SG["🛡️ Security Group<br/>Port 22 (SSH)<br/>Port 80 (HTTP)"]
+            subgraph PublicSubnet["Public Subnet (10.0.1.0/24)"]
+                EC2["EC2 Instance<br/>Amazon Linux 2"]
+                SG["Security Group<br/>Ports: 22, 80"]
             end
             
-            RT["🗺️ Route Table<br/>0.0.0.0/0 → IGW"]
+            RT["Route Table<br/>0.0.0.0/0 → IGW"]
         end
     end
     
@@ -64,13 +58,7 @@ graph TB
     IGW --> RT
     RT --> EC2
     EC2 --> SG
-    
-    classDef aws fill:#ff9900,stroke:#232f3e,stroke-width:2px,color:#232f3e;
-    class VPC,IGW,PublicSubnet,EC2,SG,RT aws;
-
-
-
-
+```
 
 
 
@@ -86,6 +74,7 @@ Security Group controls access (SSH/HTTP only)
 EC2 Instance hosts the Nginx web server
 
 ✨ Features
+
 Core Infrastructure
 ✅ Custom VPC – Isolated network (10.0.0.0/16) with DNS support
 
@@ -98,6 +87,7 @@ Core Infrastructure
 ✅ Security Groups – Least-privilege access (ports 22, 80 only)
 
 Compute & Automation
+
 ✅ EC2 Instance – Amazon Linux 2 with public IP
 
 ✅ Automated Nginx – Installed via user_data script
@@ -107,6 +97,7 @@ Compute & Automation
 ✅ Terraform Outputs – Instant access to resource details
 
 Best Practices
+
 ✅ Modular Design – Easy to extend and modify
 
 ✅ Variable Configuration – Customizable deployments
@@ -130,6 +121,7 @@ Best Practices
 └── 📖 README.md                   # This documentation
 
 ⚙️ Prerequisites
+
 Before you begin, ensure you have:
 
 Required Tools
@@ -138,6 +130,7 @@ Terraform	>= 1.0	Infrastructure provisioning
 AWS CLI	Latest	AWS API authentication
 Git	Latest	Repository cloning
 AWS Requirements
+
 ✅ Active AWS account
 
 ✅ IAM user with programmatic access
@@ -150,17 +143,16 @@ Verification Checklist
 Run these commands to confirm readiness:
 
 # Check Terraform version
+
 terraform --version
 
 # Verify AWS credentials
+
 aws sts get-caller-identity
 
 # Confirm SSH key exist
 s
 ls -la terra-ec2-key.pub
-
-# Test AWS permissions (optional)
-aws ec2 describe-regions --max-items 1
 
 🚀 Quick Start
 Deploy your infrastructure in minutes:
@@ -186,6 +178,7 @@ terraform output
 Open your browser and navigate to http://<instance_public_ip> to see the Nginx welcome page!
 
 🧩 Configuration
+
 Variables Reference
 Variable	Description	Default	Required
 aws_region	AWS deployment region	us-east-1	No
@@ -207,7 +200,8 @@ vpc_cidr_block    = "172.16.0.0/16"
 subnet_cidr_block = "172.16.1.0/24"
 🛠️ User Data Script (install-nginx.sh)
 The script runs automatically at instance launch:
-#!/bin/bash
+
+
 # Update package manager
 yum update -y
 
@@ -216,29 +210,9 @@ amazon-linux-extras install nginx1 -y
 systemctl enable nginx
 systemctl start nginx
 
-# Create custom welcome page
-cat > /usr/share/nginx/html/index.html <<EOF
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Terraform AWS Demo</title>
-    <style>
-        body { font-family: Arial; text-align: center; margin-top: 50px; }
-        h1 { color: #ff9900; }
-    </style>
-</head>
-<body>
-    <h1>🚀 Deployed with Terraform</h1>
-    <p>EC2 Instance: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</p>
-    <p>Availability Zone: $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)</p>
-    <p>Deployed on: $(date)</p>
-</body>
-</html>
-EOF
-
-Note: The script uses Amazon Linux 2 package managers (yum, amazon-linux-extras), which matches the default AMI.
 
 🔍 Troubleshooting
+
 Common Issues and Solutions
 Issue	Likely Cause	Solution
 terraform apply fails	AWS credentials incorrect	Run aws configure again
@@ -255,6 +229,7 @@ chmod 400 terra-ec2-key.pub
 # Connect to instance
 ssh -i terra-ec2-key.pub ec2-user@<public-ip>
 Verify Nginx Installation
+
 # Check service status
 sudo systemctl status nginx
 
@@ -272,12 +247,13 @@ EC2 (t3.micro)	$0.0104/hour (~$0.25/day)
 EBS (15GB gp3)	$0.10/GB-month (~$0.05/day)
 Data Transfer	Minimal for testing
 VPC Components	No additional charge
-⚠️ Warning: Always run terraform destroy when done testing to avoid unexpected charges!
 
+
+⚠️ Warning: Always run terraform destroy when done testing to avoid unexpected charges!
 🧹 Cleanup
 Destroy all resources to prevent ongoing costs:
 
-bash
+
 terraform destroy
 # Type 'yes' when prompted
 What gets deleted:
@@ -294,32 +270,25 @@ What gets deleted:
 
 ✅ VPC
 
+
 🚀 Next Steps & Enhancements
+
 Ready to take this further? Consider adding:
-
 Remote State Storage – Use S3 backend with DynamoDB locking
-
 HTTPS Support – Add ACM certificate and Route53
-
 Multiple Environments – Create dev/staging/prod workspaces
-
 Auto Scaling – Add ASG and Load Balancer
-
 Monitoring – CloudWatch alarms and dashboards
-
 Database Layer – Add RDS in private subnet
 
 CI/CD Integration – Automate with GitHub Actions
 
 🤝 Contributing
+
 Contributions are welcome! Feel free to:
-
 🍴 Fork the repository
-
 🌿 Create a feature branch
-
 🔧 Make your changes
-
 ✅ Submit a pull request
 
 Reporting Issues: Found a bug? Open an issue with details.
@@ -328,19 +297,14 @@ Reporting Issues: Found a bug? Open an issue with details.
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 🙏 Acknowledgments
+
 Built with HashiCorp Terraform
-
 AWS infrastructure powered by Amazon Web Services
-
 Diagrams created with Mermaid
-
 Inspired by the DevOps community's need for clear IaC examples
 
 📬 Connect
+
 Taranpreet Singh
-
 GitHub: @Taranpreet-devops
-
-LinkedIn: Taranpreet-devops
-
-Project: Terraform AWS VPC Demo
+LinkedIn: https://linkedin.com/in/Taranpreet-devops
