@@ -23,17 +23,19 @@
 
 ---
 
-## 📋 Overview
-
-This Terraform project provisions a **complete AWS infrastructure** including a custom VPC, public subnet, internet gateway, route tables, security groups, and an EC2 instance running Nginx. It demonstrates Infrastructure as Code (IaC) best practices for AWS networking and automated server provisioning.
-
-**Perfect for:**
-- Learning AWS networking fundamentals
-- Testing web applications in a secure environment
-- Building a foundation for production deployments
-- Demonstrating Terraform capabilities
-
-## 🏗️ Architecture Overview
+Terraform AWS Custom VPC Infrastructure with EC2 and Nginx
+Overview
+This project provisions a complete AWS infrastructure using Terraform. It creates a custom VPC, public subnet, internet gateway, route table, security group, and EC2 instance. The EC2 instance is automatically configured to run an Nginx web server using a user-data script.
+The goal of this project is to demonstrate Infrastructure as Code (IaC) practices using Terraform to automate cloud infrastructure deployment on AWS.
+Architecture
+The infrastructure created by this project includes:
+Custom VPC
+Public Subnet
+Internet Gateway
+Route Table and Route Association
+Security Group
+EC2 Instance
+Nginx Web Server (installed automatically)
 
 ```mermaid
 graph TB
@@ -61,250 +63,124 @@ graph TB
 ```
 
 
+Tech Stack
 
-Data Flow
-User accesses the application via internet
+Terraform
 
-Internet Gateway enables public internet connectivity
+Amazon Web Services (AWS)
 
-Route Table directs traffic to/from the internet
+EC2
 
-Security Group controls access (SSH/HTTP only)
+VPC
 
-EC2 Instance hosts the Nginx web server
+Nginx
 
-✨ Features
+Linux (Ubuntu)
 
-Core Infrastructure
-✅ Custom VPC – Isolated network (10.0.0.0/16) with DNS support
 
-✅ Public Subnet – DMZ for internet-facing resources
 
-✅ Internet Gateway – Public internet connectivity
+Project Structure
 
-✅ Route Tables – Proper network routing configuration
 
-✅ Security Groups – Least-privilege access (ports 22, 80 only)
+terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx/
+│
+├── provider.tf
+├── variables.tf
+├── vpc.tf
+├── subnet.tf
+├── internet_gateway.tf
+├── route_table.tf
+├── security_group.tf
+├── ec2.tf
+├── outputs.tf
+└── README.md
 
-Compute & Automation
+Prerequisites
+Before running this project, ensure you have:
+AWS Account
+AWS CLI installed and configured
+Terraform installed
+Existing AWS Key Pair for EC2 access
+Verify installations:
+terraform -v
+aws --version
+Configure AWS Credentials
+Run the following command to configure AWS CLI:
+aws configure
+Provide:
+AWS Access Key
+AWS Secret Key
+Default region (example: ap-south-1)
 
-✅ EC2 Instance – Amazon Linux 2 with public IP
-
-✅ Automated Nginx – Installed via user_data script
-
-✅ SSH Key Integration – Secure instance access
-
-✅ Terraform Outputs – Instant access to resource details
-
-Best Practices
-
-✅ Modular Design – Easy to extend and modify
-
-✅ Variable Configuration – Customizable deployments
-
-✅ Infrastructure as Code – Version-controlled infrastructure
-
-✅ Clean Destruction – No orphaned resources
-
-📁 Repository Structure
-
-.
-├── 📄 ec2.tf                    # Main infrastructure (VPC, subnet, IGW, route tables, SG, EC2)
-├── 📄 provider.tf                # AWS provider configuration
-├── 📄 variables.tf               # Input variables (AMI, instance type, volume size)
-├── 📄 outputs.tf                 # Terraform outputs (IPs, DNS, resource IDs)
-├── 📄 terraform.tf               # Backend and version configuration
-├── 📜 install-nginx.sh           # User data script for EC2 provisioning
-├── 🔑 terra-ec2-key.pub          # Public SSH key for instance access
-├── 🖼️ architecture-diagram.png    # Visual architecture overview
-├── 🎥 deployment-demo.gif         # Deployment walkthrough
-└── 📖 README.md                   # This documentation
-
-⚙️ Prerequisites
-
-Before you begin, ensure you have:
-
-Required Tools
-Tool	Version	Purpose
-Terraform	>= 1.0	Infrastructure provisioning
-AWS CLI	Latest	AWS API authentication
-Git	Latest	Repository cloning
-AWS Requirements
-
-✅ Active AWS account
-
-✅ IAM user with programmatic access
-
-✅ Permissions for: EC2, VPC, IGW, Route Tables, Security Groups
-
-✅ AWS credentials configured locally
-
-Verification Checklist
-Run these commands to confirm readiness:
-
-# Check Terraform version
-
-terraform --version
-
-# Verify AWS credentials
-
-aws sts get-caller-identity
-
-# Confirm SSH key exist
-s
-ls -la terra-ec2-key.pub
-
-🚀 Quick Start
-Deploy your infrastructure in minutes:
+Deployment Steps
 
 1. Clone the Repository
-git clone https://github.com/Taranpreet-devops/Terraform-AWS-Custom-VPC-Infrastructure-with-EC2-and-Nginx.git
-cd Terraform-AWS-Custom-VPC-Infrastructure-with-EC2-and-Nginx
+git clone https://github.com/taranpreet-devops/terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx.git
+
+cd terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx
+
 2. Initialize Terraform
 terraform init
-Downloads the AWS provider and sets up the working directory
-3. Review the Deployment Plan
+
+3. Validate Configuration
+terraform validate
+
+4. Preview Infrastructure Changes
 terraform plan
-4. Deploy the Infrastructure
-terraform apply -auto-approve
-*Creates all AWS resources (approx. 2-3 minutes)*
-5. Access Your Application
-# View outputs
-terraform output
 
-# Example output:
-# instance_public_ip = "54.123.45.67"
-# instance_public_dns = "ec2-54-123-45-67.compute-1.amazonaws.com"
-Open your browser and navigate to http://<instance_public_ip> to see the Nginx welcome page!
-
-🧩 Configuration
-
-Variables Reference
-Variable	Description	Default	Required
-aws_region	AWS deployment region	us-east-1	No
-aws_instance_type	EC2 instance size	t3.micro	No
-ec2_ami_id	Amazon Linux 2 AMI ID	ami-0b6c6ebed2801a5cb	No
-block_store_size	Root EBS volume size (GB)	15	No
-vpc_cidr_block	VPC CIDR range	10.0.0.0/16	No
-subnet_cidr_block	Public subnet CIDR	10.0.1.0/24	No
-Customizing Your Deployment
-Create a terraform.tfvars file to override defaults:
-
-# Example: Deploy to EU region with larger instance
-aws_region        = "eu-west-1"
-aws_instance_type = "t3.medium"
-block_store_size  = 30
-
-# Custom network ranges
-vpc_cidr_block    = "172.16.0.0/16"
-subnet_cidr_block = "172.16.1.0/24"
-🛠️ User Data Script (install-nginx.sh)
-The script runs automatically at instance launch:
-
-
-# Update package manager
-yum update -y
-
-# Install and configure Nginx
-amazon-linux-extras install nginx1 -y
-systemctl enable nginx
-systemctl start nginx
-
-
-🔍 Troubleshooting
-
-Common Issues and Solutions
-Issue	Likely Cause	Solution
-terraform apply fails	AWS credentials incorrect	Run aws configure again
-Error creating VPC	Permission denied	Check IAM permissions
-Can't SSH to EC2	Security group or key mismatch	Verify port 22 open and key pair name matches
-Nginx not loading	Installation failed	SSH and run: systemctl status nginx
-terraform output shows nothing	State not refreshed	Run terraform refresh first
-High cost estimate	Instance left running	Always run terraform destroy after testing
-
-SSH Access
-# Ensure key has correct permissions
-chmod 400 terra-ec2-key.pub
-
-# Connect to instance
-ssh -i terra-ec2-key.pub ec2-user@<public-ip>
-Verify Nginx Installation
-
-# Check service status
-sudo systemctl status nginx
-
-# Test local response
-curl http://localhost
-
-# View logs
-sudo tail -f /var/log/nginx/access.log
-
-💰 Cost Estimation
-Estimated daily cost: < $0.50 (us-east-1, t3.micro)
-
-Resource	Approximate Cost
-EC2 (t3.micro)	$0.0104/hour (~$0.25/day)
-EBS (15GB gp3)	$0.10/GB-month (~$0.05/day)
-Data Transfer	Minimal for testing
-VPC Components	No additional charge
-
-
-⚠️ Warning: Always run terraform destroy when done testing to avoid unexpected charges!
-🧹 Cleanup
-Destroy all resources to prevent ongoing costs:
-
-
+5. Deploy Infrastructure
+terraform apply
+Type:
+yes
+Terraform will create all AWS resources.
+Terraform Output Example
+After successful deployment you will see something like:
+public_ip = 13.xxx.xxx.xxx
+Open the IP in your browser:
+http://<public_ip>
+You should see the Nginx welcome page.
+Access EC2 via SSH
+ssh -i your-key.pem ubuntu@<public-ip>
+Example:
+ssh -i mykey.pem ubuntu@13.xxx.xxx.xxx
+Demo
+Example output in browser:
+Welcome to nginx!
+If you see this page, the nginx web server is successfully installed.
+(You can add screenshots of AWS console or browser output here)
+Destroy Infrastructure (Important)
+To avoid AWS charges, destroy the resources when finished:
 terraform destroy
-# Type 'yes' when prompted
-What gets deleted:
-
-✅ EC2 Instance
-
-✅ Security Group
-
-✅ Route Table & Association
-
-✅ Internet Gateway
-
-✅ Subnet
-
-✅ VPC
 
 
-🚀 Next Steps & Enhancements
+DevOps Concepts Demonstrated
 
-Ready to take this further? Consider adding:
-Remote State Storage – Use S3 backend with DynamoDB locking
-HTTPS Support – Add ACM certificate and Route53
-Multiple Environments – Create dev/staging/prod workspaces
-Auto Scaling – Add ASG and Load Balancer
-Monitoring – CloudWatch alarms and dashboards
-Database Layer – Add RDS in private subnet
+This project demonstrates:
+Infrastructure as Code (IaC)
+AWS networking fundamentals
+Automated infrastructure provisioning
+Terraform workflow (init → plan → apply → destroy)
+Server provisioning using user-data scripts
+Future Improvements
 
-CI/CD Integration – Automate with GitHub Actions
 
-🤝 Contributing
+Possible enhancements:
 
-Contributions are welcome! Feel free to:
-🍴 Fork the repository
-🌿 Create a feature branch
-🔧 Make your changes
-✅ Submit a pull request
 
-Reporting Issues: Found a bug? Open an issue with details.
+Use Terraform modules
+Add private subnet + NAT gateway
+Implement remote Terraform state (S3 + DynamoDB)
+Add Application Load Balancer
+Configure Auto Scaling Group
+Add CI/CD pipeline using GitHub Actions
 
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
 
-🙏 Acknowledgments
-
-Built with HashiCorp Terraform
-AWS infrastructure powered by Amazon Web Services
-Diagrams created with Mermaid
-Inspired by the DevOps community's need for clear IaC examples
-
-📬 Connect
+Author
 
 Taranpreet Singh
-GitHub: @Taranpreet-devops
-LinkedIn: https://linkedin.com/in/Taranpreet-devops
+GitHub: https://github.com/taranpreet-devops
+
+License
+
+This project is licensed under the MIT License.
+
