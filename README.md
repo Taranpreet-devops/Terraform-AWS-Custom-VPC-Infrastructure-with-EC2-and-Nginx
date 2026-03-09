@@ -76,55 +76,66 @@ __Tech Stack:-__
 
   -Linux (Ubuntu)
 
-
-
-
-
-
-
-
-
-
-
-
-
 __Project Structure__
 
 
 terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx/
+
 │
+
 ├── provider.tf
+
 ├── variables.tf
+
 ├── vpc.tf
+
 ├── subnet.tf
+
 ├── internet_gateway.tf
+
 ├── route_table.tf
+
 ├── security_group.tf
+
 ├── ec2.tf
+
 ├── outputs.tf
+
 └── README.md
 
 
-
-
-
-
 _Prerequisites__
+
 -Before running this project, ensure you have:
+
 -AWS Account
+
 -AWS CLI installed and configured
+
 -Terraform installed
+
 -Existing AWS Key Pair for EC2 access
+
 -Verify installations:
+
 -terraform -v
+
 -aws --version
+
 -Configure AWS Credentials
+
 -Run the following command to configure AWS CLI:
+
 -aws configure
+
 -Provide:
+
 -AWS Access Key
+
 -AWS Secret Key
+
 -Default region (example: ap-south-1)
+
 
 __Deployment Steps__
 
