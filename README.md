@@ -62,52 +62,46 @@ graph TB
     EC2 --> SG
 ```
 
+__Tech Stack:-__
 
-Tech Stack:-
+  -Terraform
 
-  Terraform
+  -Amazon Web Services (AWS)
 
-  Amazon Web Services (AWS)
+  -EC2
 
-  EC2
+  -VPC
 
-  VPC
+  -Nginx
 
-  Nginx
-
-  Linux (Ubuntu)
-
-
-
-  
+  -Linux (Ubuntu)
 
 
 
-Project Structure
+
+
+
+
+
+
+
+
+
+
+__Project Structure__
 
 
 terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx/
-
 │
-
 ├── provider.tf
-
 ├── variables.tf
-
 ├── vpc.tf
-
 ├── subnet.tf
-
 ├── internet_gateway.tf
-
 ├── route_table.tf
-
 ├── security_group.tf
-
 ├── ec2.tf
-
 ├── outputs.tf
-
 └── README.md
 
 
@@ -115,24 +109,24 @@ terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx/
 
 
 
-Prerequisites
-Before running this project, ensure you have:
-AWS Account
-AWS CLI installed and configured
-Terraform installed
-Existing AWS Key Pair for EC2 access
-Verify installations:
-terraform -v
-aws --version
-Configure AWS Credentials
-Run the following command to configure AWS CLI:
-aws configure
-Provide:
-AWS Access Key
-AWS Secret Key
-Default region (example: ap-south-1)
+_Prerequisites__
+-Before running this project, ensure you have:
+-AWS Account
+-AWS CLI installed and configured
+-Terraform installed
+-Existing AWS Key Pair for EC2 access
+-Verify installations:
+-terraform -v
+-aws --version
+-Configure AWS Credentials
+-Run the following command to configure AWS CLI:
+-aws configure
+-Provide:
+-AWS Access Key
+-AWS Secret Key
+-Default region (example: ap-south-1)
 
-Deployment Steps
+__Deployment Steps__
 
 1. Clone the Repository
     git clone https://github.com/taranpreet-devops/terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx.git
@@ -149,58 +143,91 @@ terraform validate
 terraform plan
 
 5. Deploy Infrastructure
-terraform apply
-Type:
-yes
-Terraform will create all AWS resources.
-Terraform Output Example
-After successful deployment you will see something like:
-public_ip = 13.xxx.xxx.xxx
-Open the IP in your browser:
-http://<public_ip>
-You should see the Nginx welcome page.
-Access EC2 via SSH
-ssh -i your-key.pem ubuntu@<public-ip>
-Example:
-ssh -i mykey.pem ubuntu@13.xxx.xxx.xxx
-Demo
-Example output in browser:
-Welcome to nginx!
-If you see this page, the nginx web server is successfully installed.
-(You can add screenshots of AWS console or browser output here)
-Destroy Infrastructure (Important)
-To avoid AWS charges, destroy the resources when finished:
-terraform destroy
+   
+
+-terraform apply
+
+-Type:
+
+-yes
+
+-Terraform will create all AWS resources.
+
+-Terraform Output Example
+
+-After successful deployment you will see something like:
+
+-public_ip = 13.xxx.xxx.xxx
+
+-Open the IP in your browser:
+
+-http://<public_ip>
+
+-You should see the Nginx welcome page.
+
+-Access EC2 via SSH
+
+-ssh -i your-key.pem ubuntu@<public-ip>
+
+-Example:
+
+-ssh -i mykey.pem ubuntu@13.xxx.xxx.xxx
+
+-Demo
+
+-Example output in browser:
+
+-Welcome to nginx!
+
+-If you see this page, the nginx web server is successfully installed.
+
+-Destroy Infrastructure 
+
+-To avoid AWS charges, destroy the resources when finished:
+
+-terraform destroy
 
 
-DevOps Concepts Demonstrated
+__DevOps Concepts Demonstrated__
+
 
 This project demonstrates:
+
 Infrastructure as Code (IaC)
+
 AWS networking fundamentals
+
 Automated infrastructure provisioning
+
 Terraform workflow (init → plan → apply → destroy)
+
 Server provisioning using user-data scripts
+
 Future Improvements
 
 
-Possible enhancements:
+__Possible enhancements:__
 
 
 Use Terraform modules
+
 Add private subnet + NAT gateway
+
 Implement remote Terraform state (S3 + DynamoDB)
+
 Add Application Load Balancer
+
 Configure Auto Scaling Group
+
 Add CI/CD pipeline using GitHub Actions
 
 
-Author
+__Author__
 
 Taranpreet Singh
 GitHub: https://github.com/taranpreet-devops
 
-License
+__License__
 
 This project is licensed under the MIT License.
 
