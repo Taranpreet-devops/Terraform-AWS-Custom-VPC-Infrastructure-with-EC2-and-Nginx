@@ -63,19 +63,23 @@ graph TB
 ```
 
 
-Tech Stack
+Tech Stack:-
 
-Terraform
+  Terraform
 
-Amazon Web Services (AWS)
+  Amazon Web Services (AWS)
 
-EC2
+  EC2
 
-VPC
+  VPC
 
-Nginx
+  Nginx
 
-Linux (Ubuntu)
+  Linux (Ubuntu)
+
+
+
+  
 
 
 
@@ -83,17 +87,33 @@ Project Structure
 
 
 terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx/
+
 │
+
 ├── provider.tf
+
 ├── variables.tf
+
 ├── vpc.tf
+
 ├── subnet.tf
+
 ├── internet_gateway.tf
+
 ├── route_table.tf
+
 ├── security_group.tf
+
 ├── ec2.tf
+
 ├── outputs.tf
+
 └── README.md
+
+
+
+
+
 
 Prerequisites
 Before running this project, ensure you have:
@@ -115,9 +135,9 @@ Default region (example: ap-south-1)
 Deployment Steps
 
 1. Clone the Repository
-git clone https://github.com/taranpreet-devops/terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx.git
+    git clone https://github.com/taranpreet-devops/terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx.git
 
-cd terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx
+    cd terraform-aws-custom-vpc-infrastructure-with-ec2-and-nginx
 
 2. Initialize Terraform
 terraform init
